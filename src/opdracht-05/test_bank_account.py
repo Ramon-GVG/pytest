@@ -34,64 +34,75 @@ def test_voorbeeld_error_heeft_de_juiste_tekst(account):
 
 
 def test_withdraw_verlaagt_saldo(account):
-    # TODO: Neem 30 euro op
-    # TODO: Check of het saldo nu 70.0 is
-    assert False, "Deze test faalt! Vervang deze regel met je eigen test"
+    # Act: neem 30 euro op
+    account.withdraw(30.0)
+    # Assert: het saldo is nu 70.0
+    assert account.balance == pytest.approx(70.0)
 
 
 def test_withdraw_geeft_nieuw_saldo_terug(account):
-    # TODO: Check of withdraw(25.0) het getal 75.0 teruggeeft
-    assert False, "Deze test faalt! Vervang deze regel met je eigen test"
+    # Act: neem 25 euro op en vang het resultaat op
+    result = account.withdraw(25.0)
+    # Assert: withdraw() geeft het nieuwe saldo 75.0 terug
+    assert result == pytest.approx(75.0)
 
 
 def test_withdraw_weigert_te_hoog_bedrag(account):
-    # TODO: Probeer 500 euro op te nemen van een rekening met 100 euro
-    # TODO: Check dat er een InsufficientFundsError komt
-    # Hint: with pytest.raises(InsufficientFundsError):
-    assert False, "Deze test faalt! Vervang deze regel met je eigen test"
+    # Assert: er komt een InsufficientFundsError bij te veel opnemen
+    with pytest.raises(InsufficientFundsError):
+        account.withdraw(500.0)
 
 
 def test_saldo_blijft_gelijk_na_mislukte_opname(account):
-    # TODO: Probeer 500 euro op te nemen (gebruik pytest.raises)
-    # TODO: Check daarna of het saldo nog steeds 100.0 is
-    assert False, "Deze test faalt! Vervang deze regel met je eigen test"
+    # Act: probeer 500 euro op te nemen (mislukt)
+    with pytest.raises(InsufficientFundsError):
+        account.withdraw(500.0)
+    # Assert: het saldo is nog steeds 100.0
+    assert account.balance == pytest.approx(100.0)
 
 
 def test_withdraw_weigert_nul(account):
-    # TODO: Check dat withdraw(0) een ValueError geeft
-    assert False, "Deze test faalt! Vervang deze regel met je eigen test"
+    # Assert: withdraw(0) geeft een ValueError
+    with pytest.raises(ValueError):
+        account.withdraw(0)
 
 
 def test_hele_saldo_opnemen_mag_wel(account):
-    # TODO: Neem precies 100.0 op (grensgeval!)
-    # TODO: Check of het saldo 0.0 is
-    assert False, "Deze test faalt! Vervang deze regel met je eigen test"
+    # Act: neem precies 100.0 op (grensgeval)
+    account.withdraw(100.0)
+    # Assert: het saldo is nu 0.0
+    assert account.balance == pytest.approx(0.0)
 
 
 def test_nieuwe_rekening_met_negatief_saldo_mag_niet():
-    # TODO: Check dat BankAccount("Test", -50) een ValueError geeft
-    assert False, "Deze test faalt! Vervang deze regel met je eigen test"
+    # Assert: een BankAccount met negatief saldo geeft een ValueError
+    with pytest.raises(ValueError):
+        BankAccount("Test", -50)
 
 
 def test_transfer_verlaagt_afzender(account, empty_account):
-    # TODO: Maak 40 euro over van account naar empty_account
-    # TODO: Check of account.balance nu 60.0 is
-    assert False, "Deze test faalt! Vervang deze regel met je eigen test"
+    # Act: maak 40 euro over van account naar empty_account
+    account.transfer_to(empty_account, 40.0)
+    # Assert: de afzender heeft nu 60.0
+    assert account.balance == pytest.approx(60.0)
 
 
 def test_transfer_verhoogt_ontvanger(account, empty_account):
-    # TODO: Maak 40 euro over van account naar empty_account
-    # TODO: Check of empty_account.balance nu 40.0 is
-    assert False, "Deze test faalt! Vervang deze regel met je eigen test"
-
+    # Act: maak 40 euro over van account naar empty_account
+    account.transfer_to(empty_account, 40.0)
+    # Assert: de ontvanger heeft nu 40.0
+    assert empty_account.balance == pytest.approx(40.0)
 
 def test_transfer_naar_iets_dat_geen_rekening_is(account):
-    # TODO: Probeer 10 euro over te maken naar de tekst "spaarpot"
-    # TODO: Check dat er een TypeError komt
-    assert False, "Deze test faalt! Vervang deze regel met je eigen test"
+    # Assert: overmaken naar een string geeft een TypeError
+    with pytest.raises(TypeError):
+        account.transfer_to(10.0, "spaarpot")
 
 
 def test_mislukte_transfer_laat_beide_rekeningen_ongemoeid(account, empty_account):
-    # TODO: Probeer 999 euro over te maken (dat lukt niet)
-    # TODO: Check dat account nog 100.0 heeft en empty_account nog 0.0
-    assert False, "Deze test faalt! Vervang deze regel met je eigen test"
+    # Act: probeer 999 euro over te maken (mislukt)
+    with pytest.raises(InsufficientFundsError):
+        account.transfer_to(empty_account, 999.0)
+    # Assert: beide rekeningen zijn ongemoeid
+    assert account.balance == pytest.approx(100.0)
+    assert empty_account.balance == pytest.approx(0.0)

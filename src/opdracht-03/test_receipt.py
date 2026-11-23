@@ -23,46 +23,48 @@ def test_voorbeeld_waarom_approx_nodig_is():
 
 
 def test_add_vat_met_laag_tarief():
-    # TODO: Test of add_vat(100.0, 0.09) ongeveer 109.0 is
-    # Hint: gebruik pytest.approx()
-    assert False, "Deze test faalt! Vervang deze regel met je eigen test"
+    result = add_vat(100.0, 0.09)
+    assert result == pytest.approx(109.0)
 
 
 def test_apply_discount_haalt_korting_eraf():
-    # TODO: Test of 10% korting op 50.0 uitkomt op 45.0
-    assert False, "Deze test faalt! Vervang deze regel met je eigen test"
+    result = apply_discount(50.0, 10)          
+    assert result == pytest.approx(45.0)
 
 
 def test_apply_discount_met_nul_procent():
-    # TODO: Test of 0% korting het bedrag niet verandert
-    assert False, "Deze test faalt! Vervang deze regel met je eigen test"
+    result = apply_discount(50.0, 0.0)
+    assert result == pytest.approx(50.0)
 
 
 def test_line_total_rekent_aantal_mee():
-    # TODO: Maak een item: {"price": 2.50, "quantity": 4}
-    # TODO: Check of line_total() uitkomt op 10.00
-    assert False, "Deze test faalt! Vervang deze regel met je eigen test"
+    item = {"price": 2.50, "quantity": 4}
+    result = line_total(item)
+    assert result == pytest.approx(10.00)
 
 
 def test_receipt_total_telt_regels_op():
-    # TODO: Maak een lijst met 2 items:
-    #   {"price": 1.20, "quantity": 3}  en  {"price": 0.95, "quantity": 2}
-    # TODO: Check of het totaal ongeveer 5.50 is
-    assert False, "Deze test faalt! Vervang deze regel met je eigen test"
+    items = [
+        {"price": 1.20, "quantity": 3},
+        {"price": 0.95, "quantity": 2},
+    ]
+    result = receipt_total(items)
+    assert result == pytest.approx(5.50)
 
 
 def test_receipt_total_geeft_nul_bij_lege_bon():
-    # TODO: Test of een lege lijst 0.0 teruggeeft
-    assert False, "Deze test faalt! Vervang deze regel met je eigen test"
+    items = []
+    result = receipt_total(items)
+    assert result == pytest.approx(0.0)
 
 
 def test_round_money_rondt_af_op_twee_decimalen():
-    # TODO: Test of 12.3456 wordt afgerond naar 12.35
-    assert False, "Deze test faalt! Vervang deze regel met je eigen test"
+    result = round_money(12.3456)
+    assert result == pytest.approx(12.35)
 
 
 def test_bon_met_korting_en_btw():
-    # TODO: Combineer alles!
-    # TODO: Bon van 200.0, daarna 25% korting, daarna 21% BTW
-    # TODO: Check of het resultaat ongeveer 181.50 is
-    assert False, "Deze test faalt! Vervang deze regel met je eigen test"
+    amount = 200.0
+    after_discount = apply_discount(amount, 25)  
+    result = add_vat(after_discount, 0.21)       
+    assert result == pytest.approx(181.50)

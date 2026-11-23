@@ -20,38 +20,35 @@ def test_voorbeeld_split_words_geeft_lijst_terug():
 
 
 def test_normalize_name_zet_alles_met_hoofdletter():
-    # TODO: Test of 'ANNA SMIT' wordt omgezet naar 'Anna Smit'
-    assert False, "Deze test faalt! Vervang deze regel met je eigen test"
+    result = normalize_name("ANNA SMIT")
+    assert result == "Anna Smit"
 
 
 def test_split_words_geeft_lege_lijst_bij_lege_tekst():
-    # TODO: Test of '' een lege lijst [] teruggeeft
-    assert False, "Deze test faalt! Vervang deze regel met je eigen test"
+    result = split_words("")
+    assert result == []
 
 
 def test_count_words_telt_woorden():
-    # TODO: Test of 'een twee drie' 3 woorden heeft
-    assert False, "Deze test faalt! Vervang deze regel met je eigen test"
+    result = count_words("een twee drie")
+    assert result == 3
 
 
 def test_unique_words_haalt_dubbele_woorden_weg():
-    # TODO: Test of 'kat hond kat' de lijst ['hond', 'kat'] geeft
-    # Let op: de lijst is alfabetisch gesorteerd!
-    assert False, "Deze test faalt! Vervang deze regel met je eigen test"
+    result = unique_words("kat hond kat")
+    assert result == ["hond", "kat"]
 
 
 def test_unique_words_negeert_hoofdletters():
-    # TODO: Test of 'Kat kat KAT' de lijst ['kat'] geeft
-    assert False, "Deze test faalt! Vervang deze regel met je eigen test"
+    result = unique_words("Kat kat KAT")
+    assert result == ["kat"]
 
 
 def test_word_frequency_telt_per_woord():
-    # TODO: Test of 'kat hond kat' de dict {'kat': 2, 'hond': 1} geeft
-    # Hint: bij een dict maakt de volgorde niet uit voor ==
-    assert False, "Deze test faalt! Vervang deze regel met je eigen test"
+    result = word_frequency("kat hond kat")
+    assert result == {"kat": 2, "hond": 1}
 
 
 def test_word_frequency_bevat_verwacht_woord():
-    # TODO: Maak de frequency van 'appel peer appel'
-    # TODO: Check met 'in' of 'appel' in de dict zit
-    assert False, "Deze test faalt! Vervang deze regel met je eigen test"
+    result = word_frequency("appel peer appel")
+    assert "appel" in result

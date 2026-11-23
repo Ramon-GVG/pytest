@@ -38,9 +38,11 @@ def test_voorbeeld_has_digit_met_parametrize(password, expected):
 @pytest.mark.parametrize(
     "password, expected",
     [
-        # TODO: Vul hier minstens 4 gevallen in voor has_uppercase
-        # Bijvoorbeeld: ("Abc", True), ("abc", False), ...
-        ("TODO", None),  # <- Haal deze regel weg als je eigen gevallen erin staan
+        ("Abc", True),
+        ("abc", False),
+        ("ABC", True),
+        ("wachtwoord", False),
+        ("Wachtwoord1", True),
     ],
 )
 def test_has_uppercase(password, expected):
@@ -50,9 +52,11 @@ def test_has_uppercase(password, expected):
 @pytest.mark.parametrize(
     "password, expected",
     [
-        # TODO: Vul hier minstens 4 gevallen in voor has_special
-        # Leestekens die tellen: ! @ # $ % ^ & * ?
-        ("TODO", None),  # <- Haal deze regel weg als je eigen gevallen erin staan
+        ("abc!", True),
+        ("abc", False),
+        ("a@b", True),
+        ("wachtwoord#1", True),
+        ("12345", False),
     ],
 )
 def test_has_special(password, expected):
@@ -62,9 +66,11 @@ def test_has_special(password, expected):
 @pytest.mark.parametrize(
     "password, expected",
     [
-        # TODO: Vul hier minstens 4 gevallen in voor is_long_enough
-        # Vergeet het grensgeval niet: precies 8 tekens!
-        ("TODO", None),  # <- Haal deze regel weg als je eigen gevallen erin staan
+        ("abcdefgh", True),
+        ("abcdefg", False),
+        ("abcdefghi", True),
+        ("", False),
+        ("12345678", True),
     ],
 )
 def test_is_long_enough(password, expected):
@@ -74,10 +80,11 @@ def test_is_long_enough(password, expected):
 @pytest.mark.parametrize(
     "password, expected_score",
     [
-        # TODO: Vul hier minstens 4 gevallen in voor password_score
-        # De score is 0 t/m 4: lang genoeg, cijfer, hoofdletter, leesteken
-        # Bijvoorbeeld: ("abc", 0), ("abcdefgh", 1), ...
-        ("TODO", None),  # <- Haal deze regel weg als je eigen gevallen erin staan
+        ("abc", 0),
+        ("abcdefgh", 1),
+        ("abcdefg1", 2),
+        ("Abcdefg1", 3),
+        ("Abcdefg1!", 4),
     ],
 )
 def test_password_score(password, expected_score):
@@ -87,9 +94,12 @@ def test_password_score(password, expected_score):
 @pytest.mark.parametrize(
     "password, expected_strength",
     [
-        # TODO: Vul hier minstens 6 gevallen in voor password_strength
-        # Zorg dat 'zwak', 'gemiddeld' EN 'sterk' allemaal voorkomen
-        ("TODO", None),  # <- Haal deze regel weg als je eigen gevallen erin staan
+        ("abc", "zwak"),
+        ("abcdefgh", "zwak"),
+        ("abcdefg1", "gemiddeld"),
+        ("Abcdefg1", "gemiddeld"),
+        ("Abcdefg1!", "sterk"),
+        ("Ab1!", "gemiddeld"),   
     ],
 )
 def test_password_strength(password, expected_strength):
@@ -97,23 +107,26 @@ def test_password_strength(password, expected_strength):
 
 
 def test_find_problems_bij_slecht_wachtwoord():
-    # TODO: Roep find_problems("abc") aan
-    # TODO: Check of alle 4 de problemen erin staan
-    assert False, "Deze test faalt! Vervang deze regel met je eigen test"
+    problems = find_problems("abc")
+    assert "te kort" in problems
+    assert "geen cijfer" in problems
+    assert "geen hoofdletter" in problems
+    assert "geen leesteken" in problems
 
 
 def test_find_problems_bij_perfect_wachtwoord():
-    # TODO: Bedenk een wachtwoord dat aan alles voldoet
-    # TODO: Check of find_problems() een lege lijst teruggeeft
-    assert False, "Deze test faalt! Vervang deze regel met je eigen test"
+    problems = find_problems("Abcdefg1!")
+    assert problems == []
 
 
 @pytest.mark.parametrize(
     "password, problem",
     [
-        # TODO: Vul gevallen in waarbij je checkt of EEN bepaald probleem
-        #       in de lijst staat, bijvoorbeeld: ("abcdefgh", "geen cijfer")
-        ("TODO", None),  # <- Haal deze regel weg als je eigen gevallen erin staan
+        ("abcdefgh", "geen cijfer"),
+        ("abcdefg1", "geen hoofdletter"),
+        ("Abcdefg1", "geen leesteken"),
+        ("Ab1!", "te kort"),
+        ("abc", "geen cijfer"),
     ],
 )
 def test_find_problems_bevat_probleem(password, problem):
